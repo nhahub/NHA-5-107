@@ -1,0 +1,156 @@
+table customer_summary
+	lineageTag: 1c93ca51-e266-402f-b4e1-f13a1962cf64
+
+	column customer_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 32f71607-2b39-4006-8585-b4ebc9f4d94a
+		summarizeBy: none
+		sourceColumn: customer_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_order_date
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: ddf9aa49-3636-4637-a5ed-d21c794aec6a
+		summarizeBy: none
+		sourceColumn: first_order_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column churn_threshold_days
+		dataType: int64
+		formatString: 0
+		lineageTag: b1cd1479-5579-4f96-b5d5-3c67c89f23ba
+		summarizeBy: sum
+		sourceColumn: churn_threshold_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_orders
+		dataType: int64
+		formatString: 0
+		lineageTag: 3ad6f71a-69ed-4cd8-9182-4e63c7b264f8
+		summarizeBy: sum
+		sourceColumn: total_orders
+
+		annotation SummarizationSetBy = Automatic
+
+	column completed_orders
+		dataType: int64
+		formatString: 0
+		lineageTag: da7349f3-3d81-4305-8979-09bdcb0b8bc6
+		summarizeBy: sum
+		sourceColumn: completed_orders
+
+		annotation SummarizationSetBy = Automatic
+
+	column cancelled_orders
+		dataType: int64
+		formatString: 0
+		lineageTag: 80e91ed4-bdff-44cd-b043-c1230d964fcb
+		summarizeBy: sum
+		sourceColumn: cancelled_orders
+
+		annotation SummarizationSetBy = Automatic
+
+	column returned_orders
+		dataType: int64
+		formatString: 0
+		lineageTag: 619a9453-797c-4340-9865-db452d15a685
+		summarizeBy: sum
+		sourceColumn: returned_orders
+
+		annotation SummarizationSetBy = Automatic
+
+	column return_rate_percentage
+		dataType: double
+		lineageTag: 0bbf3a5c-e85c-4b82-be6a-f6a06fe0a13a
+		summarizeBy: sum
+		sourceColumn: return_rate_percentage
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 3f54297b-3e16-497d-8ab9-ff74f37579a5
+		summarizeBy: sum
+		sourceColumn: total_quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_customer_rating
+		dataType: double
+		lineageTag: b5b31cf1-42f8-46c3-8aae-4e97fd6b17c7
+		summarizeBy: sum
+		sourceColumn: avg_customer_rating
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column last_order_date
+		dataType: dateTime
+		formatString: yy/mm/dd
+		lineageTag: 7bd85267-8189-48e2-b842-b52b0c478c43
+		summarizeBy: none
+		sourceColumn: last_order_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column snapshot_date
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 2d134727-453e-4153-b8cc-5aee7640a1dc
+		summarizeBy: none
+		sourceColumn: snapshot_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column days_since_last_order
+		dataType: int64
+		formatString: 0
+		lineageTag: 00a2557f-1d12-405f-8f4b-a1cfe072aa16
+		summarizeBy: sum
+		sourceColumn: days_since_last_order
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_churned
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 46668b84-9451-4784-a444-424021c6c880
+		summarizeBy: none
+		sourceColumn: is_churned
+
+		annotation SummarizationSetBy = Automatic
+
+	partition customer_summary = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("localhost\SQLEXPRESS", "RetailChurn"),
+				  #"Navigation 1" = Source{[Schema = "gold", Item = "customer_summary"]}[Data],
+				  #"Removed columns" = Table.RemoveColumns(#"Navigation 1", {"gold_created_at", "customer_id", "total_net_sales", "total_profit", "avg_order_value"}),
+				  #"Divided column" = Table.TransformColumns(#"Removed columns", {{"return_rate_percentage", each _ / 100, type number}})
+				in
+				  #"Divided column"
+
+	annotation PBI_ResultType = Table
+
