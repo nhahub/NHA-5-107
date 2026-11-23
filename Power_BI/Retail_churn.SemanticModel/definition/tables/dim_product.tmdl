@@ -1,0 +1,121 @@
+table dim_product
+	lineageTag: 434ac135-ce5a-41b9-8305-6c5f4ed42340
+
+	column product_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 1ddc4f26-2b62-4b97-9cab-b79725954766
+		summarizeBy: none
+		sourceColumn: product_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_category
+		dataType: string
+		lineageTag: 3289cf6d-4acc-460a-ab2f-5ced42d3b87a
+		summarizeBy: none
+		sourceColumn: product_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_subcategory
+		dataType: string
+		lineageTag: ba397830-7390-4c81-8f74-ff8dfb96c10f
+		summarizeBy: none
+		sourceColumn: product_subcategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_brand
+		dataType: string
+		lineageTag: 3c435b3a-aa5b-48dd-b8ea-9857a9d9b9ae
+		summarizeBy: none
+		sourceColumn: product_brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_supplier
+		dataType: string
+		lineageTag: 43365801-0738-4fea-ae0a-24d40ca4ed8e
+		summarizeBy: none
+		sourceColumn: product_supplier
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_unit_price
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 98c53912-4dc5-4f98-8663-43fa89d032c2
+		summarizeBy: none
+		sourceColumn: product_unit_price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column product_cost
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: feb7b830-1dfd-4b21-93e1-41b2874197d2
+		summarizeBy: none
+		sourceColumn: product_cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column product_margin_percentage
+		dataType: double
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 00126a5f-4252-4c71-8276-e28744dcff88
+		summarizeBy: none
+		sourceColumn: product_margin_percentage
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_rating
+		dataType: double
+		formatString: 0.00
+		lineageTag: 782e60f3-7b81-47bf-86ae-42bda3e400a2
+		summarizeBy: none
+		sourceColumn: product_rating
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_name
+		dataType: string
+		lineageTag: b2078c49-ce72-45ce-8510-173d6ebf69f1
+		summarizeBy: none
+		sourceColumn: product_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_product = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("localhost\SQLEXPRESS", "RetailChurn"),
+				  #"Navigation 1" = Source{[Schema = "gold", Item = "dim_product"]}[Data],
+				  #"Removed columns" = Table.RemoveColumns(#"Navigation 1", {"gold_created_at", "product_id"}),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Removed columns", {{"product_unit_price", Currency.Type}, {"product_cost", Currency.Type}}),
+				  #"Divided column" = Table.TransformColumns(#"Changed column type", {{"product_margin_percentage", each _ / 100, type number}}),
+				  #"Changed column type 1" = Table.TransformColumnTypes(#"Divided column", {{"product_margin_percentage", Percentage.Type}}),
+				
+				  // 1. Calculate average product_rating per product_category
+				  #"Grouped Category Rating" = Table.Group(#"Changed column type 1", {"product_category"}, {{"Avg_Rating", each List.Average(List.RemoveNulls([product_rating])), type nullable number}}),
+				
+				  // 2. Merge category average back to the main table
+				  #"Merged Rating" = Table.NestedJoin(#"Changed column type 1", {"product_category"}, #"Grouped Category Rating", {"product_category"}, "TempGroup", JoinKind.LeftOuter),
+				  #"Expanded Avg_Rating" = Table.ExpandTableColumn(#"Merged Rating", "TempGroup", {"Avg_Rating"}),
+				
+				  // 3. Impute missing ratings (Category Mean -> Fallback to 3.7)
+				  #"Imputed Rating" = Table.AddColumn(#"Expanded Avg_Rating", "Rating_Final", each [product_rating] ?? [Avg_Rating] ?? 3.7, type number),
+				
+				  // 4. Remove helper columns and restore the original column name
+				  #"Removed Temp Columns" = Table.RemoveColumns(#"Imputed Rating", {"product_rating", "Avg_Rating"}),
+				  #"Renamed Final Column" = Table.RenameColumns(#"Removed Temp Columns", {{"Rating_Final", "product_rating"}})
+				in
+				  #"Renamed Final Column"
+
+	annotation PBI_ResultType = Table
+

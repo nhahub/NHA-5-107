@@ -1,0 +1,803 @@
+table _Measures
+	lineageTag: e559fc12-007f-4789-8544-08ae51c63de1
+
+	measure 'Total Orders' =
+			
+			DISTINCTCOUNT(fact_orders[order_key])
+		formatString: 0
+		displayFolder: Order Aggregations
+		lineageTag: 1453e97f-eba0-4b9a-b58f-7db012fb8fce
+
+	measure 'Completed Orders' =
+			
+			CALCULATE(
+			    [Total Orders],
+			    fact_orders[order_status] = "Completed"
+			)
+		formatString: 0
+		displayFolder: Order Aggregations
+		lineageTag: f012a1e6-27a0-4877-ba2b-710969b6a5c2
+
+	measure 'Cancelled Orders' =
+			
+			CALCULATE(
+			    [Total Orders],
+			    fact_orders[order_status] = "Cancelled"
+			)
+		formatString: 0
+		displayFolder: Order Aggregations
+		lineageTag: ed1b9d47-efed-4f6c-8bf7-5585ea1136db
+
+	measure 'Returned Orders' =
+			
+			CALCULATE(
+			    [Total Orders],
+			    fact_orders[order_status] = "Returned"
+			)
+		formatString: 0
+		displayFolder: Order Aggregations
+		lineageTag: 4564d6f7-c03d-4a83-b943-c6c9df2d84b9
+
+	measure 'Return Rate %' =
+			
+			DIVIDE([Returned Orders], [Total Orders], 0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Order Aggregations
+		lineageTag: 506009c2-b4b4-457c-a01b-0d8fef7057a9
+
+	measure 'Total Quantity' =
+			
+			SUM(fact_orders[quantity])
+		formatString: 0
+		displayFolder: Order Aggregations
+		lineageTag: 10f54a9b-22f8-426c-a7bb-54fa1a842f5d
+
+	measure 'Total Net Sales' =
+			
+			SUM(fact_order_items[net_sales_local])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Financial Metrics
+		lineageTag: 6789569e-1312-4e66-a751-548cf112576f
+
+	measure 'Total Profit' =
+			
+			SUM(fact_order_items[profit_local])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Financial Metrics
+		lineageTag: 77d708cc-dd68-4ead-a68c-bd368c3b7808
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Average Order Value' =
+			
+			DIVIDE([Total Net Sales], [Total Orders], 0)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Financial Metrics
+		lineageTag: 09b20864-67dc-4b61-a84c-1a06be0fbead
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Average Customer Rating' =
+			
+			AVERAGE(fact_orders[customer_rating])
+		formatString: 0.00
+		displayFolder: Financial Metrics
+		lineageTag: f49231d2-8480-45d3-8f29-bd13f5f3024e
+
+	measure 'Total Gross Sales' = ```
+			
+			SUM(fact_order_items[gross_sales_local])
+			
+			```
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Financial Metrics
+		lineageTag: fa6ae3b6-517f-48c4-b1c6-05de88fd25a5
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Total Discount Amount' =
+			
+			SUM(fact_order_items[discount_amount_local])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Financial Metrics
+		lineageTag: 8db10760-d51c-4de8-8618-e619e0bd2c44
+
+	measure 'Discount Rate %' = ```
+			
+			DIVIDE(
+			    [Total Discount Amount],
+			    [Total Gross Sales],
+			    0
+			)
+			
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Financial Metrics
+		lineageTag: 835c9927-c630-44fc-b65a-7c95225b590a
+
+	measure 'Total Tax Amount' = ```
+			
+			SUM(fact_order_items[tax_amount_local])
+			
+			```
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Financial Metrics
+		lineageTag: 5ead16e1-1b24-4732-95f6-134c63e27d10
+
+	measure 'Profit Margin %' = ```
+			
+			DIVIDE(
+			    [Total Profit],
+			    [Total Net Sales],
+			    0
+			)
+			
+			```
+		displayFolder: Financial Metrics
+		lineageTag: d3700542-327d-413f-9acf-c1584b16c41c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Profit Per Order' = ```
+			
+			DIVIDE(
+			    [Total Profit],
+			    [Total Orders],
+			    0
+			)
+			
+			```
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		displayFolder: Financial Metrics
+		lineageTag: a4f1fc3c-3127-41f7-af4e-7d20c3e0d8ee
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Avg Customer Acquisition Cost' = ```
+			
+			AVERAGE(dim_customer[customer_acquisition_cost])
+			
+			```
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Financial Metrics
+		lineageTag: ac1596f8-b4ba-4a7d-8a1a-c73025c5d229
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'YoY Growth %' = ```
+			
+			VAR CurrentPeriodSales = [Total Net Sales]
+			VAR PriorPeriodSales = 
+			    CALCULATE(
+			        [Total Net Sales],
+			        SAMEPERIODLASTYEAR('Calendar'[Date])
+			    )
+			RETURN
+			    DIVIDE(
+			        CurrentPeriodSales - PriorPeriodSales,
+			        PriorPeriodSales,
+			        0
+			    )
+			
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Financial Metrics
+		lineageTag: cf30e159-4604-48e2-93e0-3fabcf4dc006
+
+	measure 'Average CAC' = AVERAGE(dim_customer[customer_acquisition_cost])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: CEO
+		lineageTag: 3de469b4-4065-4004-91db-15881834635a
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Average CLV' = AVERAGE(dim_customer[customer_lifetime_value])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: CEO
+		lineageTag: e611720f-0253-4a22-8176-2546e1a32dd9
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'CLV to CAC Ratio' = DIVIDE([Average CLV], [Average CAC], 0)
+		formatString: #,0.00%;-#,0.00%;#,0.00%
+		displayFolder: CEO
+		lineageTag: 7f3d3e1e-1f66-4b2a-be7a-079140e7b5fc
+
+	measure 'Share of Total Returns %' =
+			
+			DIVIDE([Returned Orders], CALCULATE([Returned Orders], ALL(fact_orders[return_reason])), 0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: COO\1
+		lineageTag: 679880c0-841d-433b-9bd2-24f3ac876e36
+
+	measure 'Segment Volume Share %' = ```
+			
+			DIVIDE(
+			    [Total Orders], 
+			    CALCULATE([Total Orders], REMOVEFILTERS(dim_customer[customer_segment])), 
+			    0
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: CEO
+		lineageTag: 8f30acf9-2c99-435e-aebf-089dfb1458f6
+
+	measure 'Controllable Operational Failure Share %' = ```
+			
+			CALCULATE(
+			    [Share of Total Returns %], 
+			    fact_orders[return_reason] IN {
+			        "Wrong Product", 
+			        "Late Delivery", 
+			        "Damaged Product", 
+			        "Defective Product"
+			    }
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: COO\1
+		lineageTag: 36e73a32-ec11-494d-880d-1e1630495039
+
+	measure 'SCAR Audit Trigger' =
+			
+			IF(
+			    [Return Rate %] > 0.08,
+			    "ISSUE SCAR & PAUSE PROCUREMENT (> 8.0% Return Rate)",
+			    "Acceptable Vendor Quality"
+			)
+		displayFolder: COO\1
+		lineageTag: 69bd6364-6147-4985-b05f-bed32a72de6d
+
+	measure 'Expectation Mismatch Return %' = ```
+			
+			DIVIDE(
+			    CALCULATE(
+			        [Returned Orders], 
+			        fact_orders[return_reason] IN {"Size Issue", "Changed Mind", "Product Not as Expected"}
+			    ), 
+			    [Returned Orders], 
+			    0
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: COO\1
+		lineageTag: ac386080-b8a5-4766-ba5e-60e8bcc07d1e
+
+	measure 'Physical Transit Defect Return %' = ```
+			
+			DIVIDE(
+			    CALCULATE(
+			        [Returned Orders], 
+			        fact_orders[return_reason] IN {"Damaged Product", "Defective Product", "Wrong Product"}
+			    ), 
+			    [Returned Orders], 
+			    0
+			)
+			```
+		displayFolder: COO\1
+		lineageTag: 67361e5f-9bef-408e-aa37-b5996a0db5ea
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Delay Rate %' = ```
+			
+			DIVIDE(
+			    CALCULATE([Total Orders], fact_orders[delivery_status] = "Delayed"), 
+			    [Total Orders], 
+			    0
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: COO\1
+		lineageTag: 826b1ab5-c4b2-4d43-8e49-405761c95dcf
+
+	measure 'Positive Review Share %' = ```
+			
+			DIVIDE(
+			    CALCULATE(
+			        COUNTROWS(fact_orders), 
+			        fact_orders[review_sentiment] = "Positive"
+			    ),
+			    CALCULATE(
+			        COUNTROWS(fact_orders),
+			        REMOVEFILTERS(fact_orders[review_sentiment]),
+			        NOT ISBLANK(fact_orders[review_sentiment])
+			    ),
+			    0
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: COO\1
+		lineageTag: ae8a69d6-2a5e-46ab-a0a2-f40abb27cc1d
+
+	measure 'Negative Review Share %' = ```
+			
+			DIVIDE(
+			    CALCULATE(
+			        COUNTROWS(fact_orders), 
+			        fact_orders[review_sentiment] = "Negative"
+			    ),
+			    CALCULATE(
+			        COUNTROWS(fact_orders),
+			        REMOVEFILTERS(fact_orders[review_sentiment]),
+			        NOT ISBLANK(fact_orders[review_sentiment])
+			    ),
+			    0
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: COO\1
+		lineageTag: ade7e4ab-60e8-46e1-91ae-3cf42843c7f6
+
+	measure 'Neutral Review Share %' = ```
+			
+			DIVIDE(
+			    CALCULATE(
+			        COUNTROWS(fact_orders), 
+			        fact_orders[review_sentiment] = "Neutral"
+			    ),
+			    CALCULATE(
+			        COUNTROWS(fact_orders),
+			        REMOVEFILTERS(fact_orders[review_sentiment]),
+			        NOT ISBLANK(fact_orders[review_sentiment])
+			    ),
+			    0
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: COO\1
+		lineageTag: b1aa08ac-6e26-4c75-8cc2-49417468045a
+
+	measure 'Order Share %' =
+			
+			DIVIDE(
+			    DISTINCTCOUNT(fact_orders[order_key]),
+			    CALCULATE(
+			        DISTINCTCOUNT(fact_orders[order_key]),
+			        REMOVEFILTERS(fact_orders[order_status])
+			    ),
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: COO\2
+		lineageTag: bbbcff62-7bff-4443-b95f-4da860c6ba30
+
+	measure 'Paid Unshipped Count' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(fact_orders[order_key]),
+			    fact_orders[payment_status] = "Paid",
+			    fact_orders[order_status] = "Pending"
+			)
+		formatString: 0
+		displayFolder: COO\2
+		lineageTag: 67673a92-6d72-4ae8-a9f7-62be216691c4
+
+	measure 'Cancellation Rate %' = ```
+			
+			DIVIDE(
+			    CALCULATE(
+			        DISTINCTCOUNT(fact_orders[order_key]), 
+			        fact_orders[order_status] = "Cancelled"
+			    ),
+			    DISTINCTCOUNT(fact_orders[order_key]),
+			    0
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: COO\2
+		lineageTag: 9f749f88-a27f-44fd-8f4d-6ded0d9cb804
+
+	measure 'Share of Net Sales %' =
+			
+			DIVIDE(
+			    SUM(fact_orders[shipping_cost_local]),
+			    SUM(fact_orders[net_sales_local]),
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: COO\2
+		lineageTag: 4e53e965-4c09-466a-9401-2390ff46a451
+
+	measure 'Low-Value Basket Freight Burden %' =
+			
+			CALCULATE(
+			    [Share of Net Sales %],
+			    fact_orders[net_sales_local] < 150
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: COO\2
+		lineageTag: 84401059-2fa8-4843-940a-c3ff8d013ff0
+
+	measure 'Freight Margin celling' =
+			
+			IF(
+			    [Share of Net Sales %] > 0.08,
+			    "ENFORCE MINIMUM ORDER VALUE",
+			    "Standard Subsidy"
+			)
+		displayFolder: COO\2
+		lineageTag: 49e02562-6a4b-40ff-87a3-2f09680edd18
+
+	measure 'Cancelled Net Sales' =
+			
+			CALCULATE(
+			    SUM(fact_order_items[net_sales_local]),
+			    fact_orders[order_status] = "Cancelled"
+			)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: COO\2
+		lineageTag: 0ee5c534-0c9a-443e-8d01-2f5ccc3c6574
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Stockout SKU Rank' =
+			
+			RANKX(
+			    ALL(dim_product[product_name]),
+			    [Cancelled Net Sales],,
+			    DESC
+			)
+		displayFolder: COO\2
+		lineageTag: d6350c6e-5867-4107-a5cf-088867a28e9b
+
+	measure 'Top 10 Stockout Unfulfilled Sales' =
+			
+			IF(
+			    [Stockout SKU Rank] <= 10,
+			    [Cancelled Net Sales],
+			    BLANK()
+			)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: COO\2
+		lineageTag: e345b79a-050b-4e38-9d8d-fb99afaf9172
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Total Shipping Amount' = ```
+			SUM(fact_order_items[shipping_cost_local])
+			
+			```
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: CFO\1
+		lineageTag: faf75a65-bc9d-4b3c-98e0-28b393e7fefa
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Total Product Cost' = SUM(fact_order_items[product_cost_local])
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		displayFolder: CFO\1
+		lineageTag: a618c111-c71a-4178-a994-497e092cc971
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Discount % of Gross' =
+			
+			DIVIDE([Total Discount Amount], [Total Gross Sales], 0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: CFO\1
+		lineageTag: d2e4fd0e-3866-4405-a360-233f9eab8ab3
+
+	measure 'Negative Profit Order Share %' =
+			
+			VAR NegativeOrders = CALCULATE(DISTINCTCOUNT(fact_orders[order_key]), fact_orders[profit_local] < 0)
+			VAR TotalOrdersCount = DISTINCTCOUNT(fact_orders[order_key])
+			RETURN DIVIDE(NegativeOrders, TotalOrdersCount, 0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: CFO\1
+		lineageTag: a61c9a67-5051-4b07-a4b1-e209fe156cf5
+
+	measure 'Checkout Discount Hard-Cap Trigger' =
+			
+			IF(
+			    SELECTEDVALUE(fact_orders[discount_percentage]) > 0.30,
+			    "Discount > 30%",
+			    "Approved Discount Rate"
+			)
+		displayFolder: CFO\1
+		lineageTag: 85d6f17c-981d-44be-be8c-1d926fcbe75a
+
+	measure 'Coupon Status' =
+			
+			IF(
+			    [Profit Margin %] < 0.30,
+			    "DEACTIVATE COUPON CODE (< 30% Guardrail Floor)",
+			    "Active Coupon Tier"
+			)
+		displayFolder: CFO\1
+		lineageTag: eed62e5c-bdd9-4ad2-9780-44251616a3f7
+
+	measure 'Giveaway % of Net Profit' = ```
+			
+			DIVIDE(
+			    SUM(fact_orders[discount_amount_local]), 
+			    SUM(fact_orders[profit_local]), 
+			    0
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: CFO\1
+		lineageTag: 35b71111-b171-4806-9c5d-a02e1a16daa3
+
+	measure 'Visual 4 thresholds' =
+			
+			IF(
+			    [Giveaway % of Net Profit] > 0.50,
+			    "PAUSE / RESTRUCTURE CAMPAIGN (>50% Giveaway Ceiling)",
+			    "Efficient Campaign"
+			)
+		displayFolder: CFO\1
+		lineageTag: ea485f60-0faf-483c-a810-7513a017c557
+
+	measure 'First-Time Buyer Avg Discount %' =
+			
+			CALCULATE(
+			    AVERAGE(fact_orders[discount_percentage]),
+			    fact_orders[customer_type] = "New"
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: CFO\1
+		lineageTag: 5ca39c3e-3e9b-4118-9be6-38581ba3648f
+
+	measure 'Repeat Loyalist Avg Discount %' =
+			
+			CALCULATE(
+			    AVERAGE(fact_orders[discount_percentage]),
+			    fact_orders[customer_type] IN {"Returning", "Loyal"}
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: CFO\1
+		lineageTag: a9c8a7eb-e86e-4aab-9144-ab55a96694cb
+
+	measure 'CLV to CAC Payback Multiple' =
+			
+			DIVIDE([Average CLV], [Average CAC], 0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: CFO\2
+		lineageTag: ef483da1-d5fd-4320-9c88-476912fc89dd
+
+	measure 'Visual 1 Threshold' =
+			
+			IF(
+			    [CLV to CAC Payback Multiple] < 220,
+			    "REALLOCATE 25% PAID AD CAPITAL AWAY (< 220x Payback)",
+			    "Scale Acquisition Spend"
+			)
+		displayFolder: CFO\2
+		lineageTag: 1fe960e9-b527-4d4f-a95b-02c9b23d71aa
+
+	measure 'First-Order Order Net Profit' = ```
+			
+			CALCULATE(
+			    SUM(fact_order_items[profit_local]), 
+			    fact_orders[order_sequence] = 1
+			)
+			```
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: CFO\2
+		lineageTag: 56eabc30-5679-4437-a702-3cc5bf033fb7
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Catalog List Markup %' =
+			
+			DIVIDE(
+			    AVERAGE(dim_product[product_unit_price]) - AVERAGE(dim_product[product_cost]),
+			    AVERAGE(dim_product[product_cost]),
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: CFO\2
+		lineageTag: afadb712-f78b-4a4c-98fa-d82496dac4c2
+
+	measure 'Supplier Wholesale Renegotiation Mandate' =
+			
+			IF(
+			    [Profit Margin %] < 0.42,
+			    "MANDATE SUPPLIER WHOLESALE RENEGOTIATION (< 42% Realized Margin)",
+			    "Healthy Wholesale Realization"
+			)
+		displayFolder: CFO\2
+		lineageTag: 36a54010-25db-4830-a63d-493a83fa65d8
+
+	measure 'Product COGS Share %' =
+			
+			DIVIDE(SUM(fact_order_items[product_cost_local]), SUM(fact_order_items[net_sales_local]), 0)
+		displayFolder: CFO\2
+		lineageTag: 204a893a-8e78-4d71-8d19-200e63d61098
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Visual 5 Threshold' =
+			
+			IF(
+			    [Profit Margin %] < 0.45,
+			    "RECALIBRATE REGIONAL CURRENCY PRICE LIST (< 45% Post-Tax Margin)",
+			    "Target Margin Achieved"
+			)
+		displayFolder: CFO\2
+		lineageTag: 518197b4-3da6-40c7-b794-01bfd9e75712
+
+	measure 'Order #1 -> #2' =
+			
+			VAR Order1Count = CALCULATE(DISTINCTCOUNT(fact_orders[customer_key]), fact_orders[order_sequence] >= 1)
+			VAR Order2Count = CALCULATE(DISTINCTCOUNT(fact_orders[customer_key]), fact_orders[order_sequence] >= 2)
+			RETURN DIVIDE(Order1Count - Order2Count, Order1Count, 0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Customer Churn
+		lineageTag: 6aff9533-5e14-49bc-80f4-31cf6dcef848
+
+	measure 'Order #2 -> #3' =
+			
+			VAR Order1Count = CALCULATE(DISTINCTCOUNT(fact_orders[customer_key]), fact_orders[order_sequence] >= 2)
+			VAR Order2Count = CALCULATE(DISTINCTCOUNT(fact_orders[customer_key]), fact_orders[order_sequence] >= 3)
+			RETURN DIVIDE(Order1Count - Order2Count, Order1Count, 0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Customer Churn
+		lineageTag: b9ea505e-7634-41a0-9d0b-76f84317bb7f
+
+	measure 'Order #3 -> #4' =
+			
+			VAR Order1Count = CALCULATE(DISTINCTCOUNT(fact_orders[customer_key]), fact_orders[order_sequence] >= 3)
+			VAR Order2Count = CALCULATE(DISTINCTCOUNT(fact_orders[customer_key]), fact_orders[order_sequence] >= 4)
+			RETURN DIVIDE(Order1Count - Order2Count, Order1Count, 0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Customer Churn
+		lineageTag: 67dc3a2d-05d3-4284-976c-2ec991b1ce34
+
+	measure 'Order #4 -> #5' =
+			
+			VAR Order1Count = CALCULATE(DISTINCTCOUNT(fact_orders[customer_key]), fact_orders[order_sequence] >= 4)
+			VAR Order2Count = CALCULATE(DISTINCTCOUNT(fact_orders[customer_key]), fact_orders[order_sequence] >= 5)
+			RETURN DIVIDE(Order1Count - Order2Count, Order1Count, 0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Customer Churn
+		lineageTag: 831a8644-1b0f-4b65-9d1d-7e0cc6de1030
+
+	measure 'Order #5+' =
+			
+			VAR Order1Count = CALCULATE(DISTINCTCOUNT(fact_orders[customer_key]), fact_orders[order_sequence] >= 5)
+			VAR Order2Count = CALCULATE(DISTINCTCOUNT(fact_orders[customer_key]), fact_orders[order_sequence] >= 6)
+			RETURN DIVIDE(Order1Count - Order2Count, Order1Count, 0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Customer Churn
+		lineageTag: 03eca743-1d6e-4c7d-a706-13509a0f7c85
+
+	measure 'Visual 1 Thresholds' =
+			
+			IF(
+			    [Order #1 -> #2] >= 0.20 || [Order #2 -> #3] >= 0.20 || [Order #3 -> #4] >= 0.20 || [Order #4 -> #5] >= 0.20  || [Order #5+] >= 0.20 ,
+			    "DEPLOY AUTOMATED REPLENISHMENT & ONBOARDING WORKFLOW",
+			    "Standard Transition Sequences"
+			)
+		displayFolder: Customer Churn
+		lineageTag: 3f9e5e41-003c-4d1b-89ac-329d2752cbd4
+
+	measure 'At-Risk Customer Count' =
+			
+			CALCULATE(
+			    SUM(dim_customer[Customer_Lifetime_Value]),
+			    customer_summary[is_churned] = TRUE
+			)
+		formatString: 0
+		displayFolder: Customer Churn
+		lineageTag: a3534084-e12c-4608-8667-1056916965fa
+
+	measure 'Segment At-Risk Equity Share %' =
+			
+			DIVIDE(
+			    [At-Risk Customer Count],
+			    CALCULATE(
+			        [At-Risk Customer Count],
+			        REMOVEFILTERS(dim_customer[customer_segment])
+			    ),
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Customer Churn
+		lineageTag: bb05bd53-b819-4500-89b7-7df16b35093a
+
+	measure 'Customer Churn Probability %' =
+			
+			VAR TotalSegmentCustomers = DISTINCTCOUNT(fact_orders[customer_key])
+			VAR ChurnedSegmentCustomers = CALCULATE(DISTINCTCOUNT(fact_orders[customer_key]), customer_summary[is_churned] = True)
+			RETURN DIVIDE(ChurnedSegmentCustomers, TotalSegmentCustomers, 0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Customer Churn
+		lineageTag: 120f170d-96c0-47aa-9e00-c89d32fce974
+
+	measure 'Visual 3 thresholds' =
+			
+			IF(
+			    SELECTEDVALUE(fact_orders[Delivery_Delay_Days]) >= 2,
+			    ">= 2 Days SLA Breach",
+			    "Standard Fulfillment"
+			)
+		displayFolder: Customer Churn
+		lineageTag: 68185a92-c1df-4663-85d4-60d1184f7ad0
+
+	measure 'Visual 4 Thresholds Churn' =
+			
+			IF(
+			    [Profit Margin %] < 0.30,
+			    "REJECT WIN-BACK OFFER (< 30% Corporate Floor)",
+			    IF(
+			        SELECTEDVALUE(fact_orders[Coupon_Tiers]) = "Zero-Discount Points Nudge",
+			        "LEAD WIN-BACK WITH POINTS NUDGE (51.2% Margin)",
+			        "Cap Discount at SAVE15 (Consumer) / SAVE25 (VIP)"
+			    )
+			)
+		displayFolder: Customer Churn
+		lineageTag: 29a46fd9-db36-4cab-852b-f69161843057
+
+	measure 'Customer Cumulative Profit' =
+			
+			CALCULATE(
+			    SUM(fact_orders[profit_local]),
+			    ALLEXCEPT(dim_customer, dim_customer[customer_key])
+			)
+		formatString: 0
+		displayFolder: Customer Churn\Visual 5
+		lineageTag: 05b1f7cd-518b-45e7-a3fe-39ae462cee00
+
+	measure 'Filters out unprofitable returners' = ```
+			
+			VAR IsChurnedVal = SELECTEDVALUE(customer_summary[is_churned])
+			VAR SegmentVal   = SELECTEDVALUE(dim_customer[customer_segment])
+			VAR ProfitVal    = [Customer Cumulative Profit]
+			RETURN
+			    IF(
+			        IsChurnedVal = TRUE 
+			        && SegmentVal IN {"VIP", "Premium"} 
+			        && ProfitVal > 0,
+			        1,
+			        0
+			    )
+			```
+		formatString: 0
+		displayFolder: Customer Churn\Visual 5
+		lineageTag: 10834598-79d3-45d7-bb75-6b30a740844d
+
+	measure 'Top At-Risk VIP & Premium Account CLV ($)' =
+			
+			IF(
+			    [Filters out unprofitable returners] = 1,
+			    SUM(dim_customer[Customer_Lifetime_Value]),
+			    BLANK()
+			)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		displayFolder: Customer Churn\Visual 5
+		lineageTag: 07533c08-e652-42c2-a7ef-895df909aeb5
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Monday CRM Outreach Rank' =
+			
+			IF(
+			    [Filters out unprofitable returners] = 1,
+			    RANKX(
+			        FILTER(
+			            ALL(dim_customer),
+			            [Filters out unprofitable returners] = 1
+			        ),
+			        CALCULATE(SUM(dim_customer[Customer_Lifetime_Value])),
+			        ,
+			        DESC
+			    ),
+			    BLANK()
+			)
+		formatString: 0
+		displayFolder: Customer Churn\Visual 5
+		lineageTag: c701b09a-6864-4206-9a0b-14d5b8299bf7
+
+	partition _Measures = m
+		mode: import
+		source =
+				let
+				  Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Removed Columns" = Table.RemoveColumns(Source,{"Column1"})
+				in
+				  #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

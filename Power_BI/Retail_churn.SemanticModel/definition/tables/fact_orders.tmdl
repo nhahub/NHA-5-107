@@ -1,0 +1,635 @@
+table fact_orders
+	lineageTag: 2b43cecf-f6dd-4827-aa58-82e78fa5999e
+
+	column order_key
+		dataType: string
+		lineageTag: 50d9e8c5-0fa5-4d43-8729-e4edbc734c17
+		summarizeBy: none
+		sourceColumn: order_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: string
+		lineageTag: 50201a51-0a9a-4141-b67c-cd0867b312d3
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_key
+		dataType: int64
+		formatString: 0
+		lineageTag: bd9222ff-0aad-4d06-b49e-e3d0e0e19ab5
+		summarizeBy: none
+		sourceColumn: customer_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_time
+		dataType: string
+		lineageTag: e51b228e-1eba-481c-8c2b-ea5c651fdbd9
+		summarizeBy: none
+		sourceColumn: order_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_status
+		dataType: string
+		lineageTag: 585db91d-7097-4021-b88a-6bd7939abb23
+		summarizeBy: none
+		sourceColumn: order_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column sales_channel
+		dataType: string
+		lineageTag: ccef5451-683f-4a68-a5f4-8e106508df70
+		summarizeBy: none
+		sourceColumn: sales_channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_type
+		dataType: string
+		lineageTag: 07bb1a4b-860b-494c-a721-ff3365ade8bf
+		summarizeBy: none
+		sourceColumn: customer_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_method
+		dataType: string
+		lineageTag: a3ad96f1-4744-4814-a238-e2cda04e23f5
+		summarizeBy: none
+		sourceColumn: payment_method
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_status
+		dataType: string
+		lineageTag: 619e66fa-aff9-4547-a3f0-49181c1cb9c1
+		summarizeBy: none
+		sourceColumn: payment_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column currency
+		dataType: string
+		lineageTag: 998e5cf2-225a-401d-9149-4b3ecd7c984a
+		summarizeBy: none
+		sourceColumn: currency
+
+		annotation SummarizationSetBy = Automatic
+
+	column shipping_method
+		dataType: string
+		lineageTag: 07fb9e1e-5801-4935-b65a-410fea4a9e2f
+		summarizeBy: none
+		sourceColumn: shipping_method
+
+		annotation SummarizationSetBy = Automatic
+
+	column warehouse
+		dataType: string
+		lineageTag: c64acf7d-f1cc-4768-a523-4b0c1853bab3
+		summarizeBy: none
+		sourceColumn: warehouse
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_status
+		dataType: string
+		lineageTag: 5a3477b9-9a7c-4e71-8a25-498934507674
+		summarizeBy: none
+		sourceColumn: delivery_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 122e461b-783c-4d34-ba95-4b674b509f52
+		summarizeBy: none
+		sourceColumn: delivery_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column estimated_delivery_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 361be399-9503-4de9-a159-23ad6f6df44a
+		summarizeBy: none
+		sourceColumn: estimated_delivery_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_delay_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 34acc115-5e51-49c8-8cb6-fcafa4b1fa06
+		summarizeBy: none
+		sourceColumn: delivery_delay_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column return_status
+		dataType: string
+		lineageTag: 22561512-430b-4076-9d6f-72485e0bd8b1
+		summarizeBy: none
+		sourceColumn: return_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column return_reason
+		dataType: string
+		lineageTag: 1dd33dd2-21b9-4036-ba8f-a4b975ef4d8f
+		summarizeBy: none
+		sourceColumn: return_reason
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_returned
+		dataType: string
+		lineageTag: 0206b5cb-4b8e-4ef9-8b74-befdbd5263ba
+		summarizeBy: none
+		sourceColumn: is_returned
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_rating
+		dataType: string
+		lineageTag: 3ce69b12-5f19-43cd-9770-6db42b9eaf10
+		summarizeBy: none
+		sourceColumn: customer_rating
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_sentiment
+		dataType: string
+		lineageTag: bc7c5055-6a97-4a59-b308-ec5b6e478d62
+		summarizeBy: none
+		sourceColumn: review_sentiment
+
+		annotation SummarizationSetBy = Automatic
+
+	column marketing_channel
+		dataType: string
+		lineageTag: 0ea80f1e-d026-4da7-b375-091c6a731416
+		summarizeBy: none
+		sourceColumn: marketing_channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column campaign_name
+		dataType: string
+		lineageTag: 5e9264a7-af79-4ee6-9e2e-9dec05add705
+		summarizeBy: none
+		sourceColumn: campaign_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column coupon_code
+		dataType: string
+		lineageTag: 02d9c101-42a0-4e23-9fb4-38c1a7a79bab
+		summarizeBy: none
+		sourceColumn: coupon_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column has_coupon
+		dataType: string
+		lineageTag: 65df9906-a1af-4abf-9d67-c1b032ff3870
+		summarizeBy: none
+		sourceColumn: has_coupon
+
+		annotation SummarizationSetBy = Automatic
+
+	column loyalty_points_earned
+		dataType: string
+		lineageTag: be24b198-7d94-4eaf-8f24-b15b0c62a333
+		summarizeBy: none
+		sourceColumn: loyalty_points_earned
+
+		annotation SummarizationSetBy = Automatic
+
+	column loyalty_points_redeemed
+		dataType: string
+		lineageTag: 4c1fb21d-e991-46e1-a2f8-a6e69d1d3713
+		summarizeBy: none
+		sourceColumn: loyalty_points_redeemed
+
+		annotation SummarizationSetBy = Automatic
+
+	column quantity
+		dataType: string
+		lineageTag: b6dd4e1b-b74c-4efa-aaaa-bacf996ad741
+		summarizeBy: none
+		sourceColumn: quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column gross_sales_local
+		dataType: string
+		lineageTag: ecc616d7-0450-4ea8-bf33-29b291fd7617
+		summarizeBy: none
+		sourceColumn: gross_sales_local
+
+		annotation SummarizationSetBy = Automatic
+
+	column discount_amount_local
+		dataType: string
+		lineageTag: bbfcf822-acbb-4861-9bf8-e8b9c959249d
+		summarizeBy: none
+		sourceColumn: discount_amount_local
+
+		annotation SummarizationSetBy = Automatic
+
+	column tax_amount_local
+		dataType: string
+		lineageTag: ada78575-3f5e-451d-b5d3-f8cee6dafa8f
+		summarizeBy: none
+		sourceColumn: tax_amount_local
+
+		annotation SummarizationSetBy = Automatic
+
+	column shipping_cost_local
+		dataType: string
+		lineageTag: 86d193a6-2bff-459c-9e55-6079e4a5c457
+		summarizeBy: none
+		sourceColumn: shipping_cost_local
+
+		annotation SummarizationSetBy = Automatic
+
+	column net_sales_local
+		dataType: string
+		lineageTag: 76974106-4fe3-4345-ba20-5358c6daa396
+		summarizeBy: none
+		sourceColumn: net_sales_local
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_cost_local
+		dataType: string
+		lineageTag: 52161d5b-8475-4824-8c0f-0818c3ef9eab
+		summarizeBy: none
+		sourceColumn: product_cost_local
+
+		annotation SummarizationSetBy = Automatic
+
+	column profit_local
+		dataType: string
+		lineageTag: e1520675-3662-491b-a2d0-2c9d08c2aec1
+		summarizeBy: none
+		sourceColumn: profit_local
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_sequence
+		dataType: int64
+		formatString: 0
+		lineageTag: 30eb0426-a607-47bd-9351-219a97df31c2
+		summarizeBy: none
+		sourceColumn: order_sequence
+
+		annotation SummarizationSetBy = Automatic
+
+	column discount_percentage
+		dataType: double
+		lineageTag: f9f10fa3-98e0-44b8-8a28-1732691d070b
+		summarizeBy: none
+		sourceColumn: discount_percentage
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Coupon_Tiers
+		dataType: string
+		lineageTag: c4ea2647-871a-467e-a65c-18cb35986547
+		summarizeBy: none
+		sourceColumn: Coupon_Tiers
+
+		annotation SummarizationSetBy = Automatic
+
+	column Coupon_Sort
+		dataType: int64
+		formatString: 0
+		lineageTag: 87e4f2b9-ff89-4508-80d6-89cd7cd8e27b
+		summarizeBy: none
+		sourceColumn: Coupon_Sort
+
+		annotation SummarizationSetBy = Automatic
+
+	column Delay_Status_Tier
+		dataType: string
+		lineageTag: e5d83439-7b7a-44ee-8ba8-1cfee01f7723
+		summarizeBy: none
+		sourceColumn: Delay_Status_Tier
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Discount Tiers'
+		dataType: string
+		lineageTag: 27596a6c-43f5-4fb6-a79c-7ebd8ca0fc20
+		summarizeBy: none
+		sourceColumn: Discount Tiers
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Discount Tier Sort'
+		dataType: int64
+		formatString: 0
+		lineageTag: 702886d4-e18d-43f0-badd-6a2ef409c934
+		summarizeBy: none
+		sourceColumn: Discount Tier Sort
+
+		annotation SummarizationSetBy = Automatic
+
+	column Purchase_Label
+		dataType: string
+		lineageTag: 0d5e7683-20fe-44f8-96cc-03eb8d71516e
+		summarizeBy: none
+		sourceColumn: Purchase_Label
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonth
+		dataType: int64
+		formatString: 0
+		lineageTag: 02083605-d8d7-4e72-a003-5be137d8a387
+		summarizeBy: none
+		sourceColumn: YearMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column usd_multiplier
+		dataType: double
+		lineageTag: 4535d0ac-f353-46a0-8f0c-744ac3849a06
+		summarizeBy: none
+		sourceColumn: usd_multiplier
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column gross_sales
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 11b482c9-2995-46a8-8015-7a9cef5addaa
+		summarizeBy: none
+		sourceColumn: gross_sales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column discount_amount
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 32d0dec2-a142-47ba-b41e-da30e03e5164
+		summarizeBy: none
+		sourceColumn: discount_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column tax_amount
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 678f7537-acdd-443a-b92f-719f3bf27f6c
+		summarizeBy: none
+		sourceColumn: tax_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column shipping_cost
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 2f88cd8c-bd37-4f92-a3b3-039c90dba26a
+		summarizeBy: none
+		sourceColumn: shipping_cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column net_sales
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 99b1a674-97b8-4f6c-ae02-0ae8b90eb447
+		summarizeBy: none
+		sourceColumn: net_sales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column product_cost
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: d849a3e5-f7ca-45bc-800a-a445f02a9c05
+		summarizeBy: none
+		sourceColumn: product_cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column profit
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: bd80ce51-f68a-4ff0-bedb-5db46bd74799
+		summarizeBy: none
+		sourceColumn: profit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	partition fact_orders = m
+		mode: import
+		source = ```
+				let
+				  Source = Sql.Database("localhost\SQLEXPRESS", "RetailChurn"),
+				  #"Navigation 1" = Source{[Schema = "gold", Item = "fact_orders"]}[Data],
+				  #"Removed columns" = Table.RemoveColumns(#"Navigation 1", {"gold_created_at", "order_id", "profit_margin_percentage"}),
+				
+				  // Convert integer date_key (e.g., 20221026) to a real Date
+				  #"Converted date_key to Date" = Table.TransformColumns(
+				      #"Removed columns", 
+				      {{"date_key", each if _ <> null then Date.FromText(Text.From(_)) else null, type date}}
+				  ),
+				
+				  #"Changed column type" = Table.TransformColumnTypes(
+				      #"Converted date_key to Date", 
+				      {
+				          {"discount_amount", Currency.Type}, 
+				          {"tax_amount", Currency.Type}, 
+				          {"shipping_cost", Currency.Type}, 
+				          {"gross_sales", Currency.Type}, 
+				          {"net_sales", Currency.Type}, 
+				          {"product_cost", Currency.Type}, 
+				          {"profit", Currency.Type}
+				      }
+				  ),
+				
+				  // Group by customer_key, sort by date and order_key, then add sequence index
+				  #"Grouped By Customer" = Table.Group(#"Changed column type", {"customer_key"}, {
+				      "CustomerData", each Table.AddIndexColumn(
+				          Table.Sort(_, {{"date_key", Order.Ascending}, {"order_key", Order.Ascending}}), 
+				          "order_sequence", 
+				          1, 
+				          1, 
+				          Int64.Type
+				      )
+				  }),
+				
+				  // Define exact list of inner columns to expand
+				  ColumnsToExpand = List.RemoveItems(Table.ColumnNames(#"Changed column type"), {"customer_key"}) & {"order_sequence"},
+				
+				  #"Expanded CustomerData" = Table.ExpandTableColumn(
+				      #"Grouped By Customer", 
+				      "CustomerData", 
+				      ColumnsToExpand
+				  ),
+				  
+				  #"Changed column type 1" = Table.TransformColumnTypes(
+				      #"Expanded CustomerData", 
+				      {
+				          {"order_sequence", Int64.Type}, 
+				          {"delivery_days", Int64.Type}, 
+				          {"estimated_delivery_days", Int64.Type}, 
+				          {"delivery_delay_days", Int64.Type}
+				      }
+				  ),
+				
+				  // 1. discount_percentage: DIVIDE(discount_amount, gross_sales, 0)
+				  #"Added Discount_Percentage" = Table.AddColumn(
+				      #"Changed column type 1", 
+				      "discount_percentage", 
+				      each let
+				          discAmt = if [discount_amount] = null then 0 else Number.From([discount_amount]),
+				          gross = if [gross_sales] = null then 0 else Number.From([gross_sales])
+				      in
+				          if gross > 0 then discAmt / gross else 0,
+				      Percentage.Type
+				  ),
+				
+				  // 2. Win_Back_Offer_Tier
+				  #"Added Coupon_Tiers" = Table.AddColumn(
+				      #"Added Discount_Percentage", 
+				      "Coupon_Tiers", 
+				      each let
+				          disc = if [discount_percentage] = null then 0 else Number.From([discount_percentage]),
+				          code = if [coupon_code] = null then "" else Text.Upper(Text.Trim(Text.From([coupon_code])))
+				      in
+				          if disc = 0 or code = "" or List.Contains({"NONE", "POINTS NUDGE", "ZERO-DISCOUNT POINTS NUDGE"}, code) 
+				              then "Zero-Discount"
+				          else if disc <= 0.15 
+				              then "SAVE15"
+				          else if disc <= 0.25 
+				              then "SAVE25"
+				          else 
+				              "SAVE35+ Coupon",
+				      type text
+				  ),
+				
+				  // 3. Win_Back_Offer_Sort
+				  #"Added Coupon_Sort" = Table.AddColumn(
+				      #"Added Coupon_Tiers", 
+				      "Coupon_Sort", 
+				      each if [Coupon_Tiers] = "Zero-Discount" then 1
+				      else if [Coupon_Tiers] = "SAVE15" then 2
+				      else if [Coupon_Tiers] = "SAVE25" then 3
+				      else if [Coupon_Tiers] = "SAVE35+ Coupon" then 4
+				      else 5,
+				      Int64.Type
+				  ),
+				
+				  // 4. Delay_Status_Tier (Handles null/unfulfilled dispatches)
+				  #"Added Delay_Status_Tier" = Table.AddColumn(
+				      #"Added Coupon_Sort", 
+				      "Delay_Status_Tier", 
+				      each if [delivery_delay_days] = null then "Unfulfilled"
+				      else if [delivery_delay_days] <= 0 then "On-Time / Early"
+				      else if [delivery_delay_days] = 1 then "1 Day Late"
+				      else if [delivery_delay_days] = 2 then "2 Days Late"
+				      else "3+ Days Late",
+				      type text
+				  ),
+				
+				  // 5. Discount Tiers (0-10%, 10-20%, 20-30%, 30-40%, 40%+)
+				  #"Added Discount_Tiers" = Table.AddColumn(
+				      #"Added Delay_Status_Tier", 
+				      "Discount Tiers", 
+				      each let
+				          disc = if [discount_percentage] = null then 0 else Number.From([discount_percentage])
+				      in
+				          if disc <= 0.10 then "0-10%"
+				          else if disc <= 0.20 then "10-20%"
+				          else if disc <= 0.30 then "20-30%"
+				          else if disc <= 0.40 then "30-40%"
+				          else "40%+",
+				      type text
+				  ),
+				
+				  // 6. Discount Tier Sort (Sort column for Discount Tiers axis)
+				  #"Added Discount_Tier_Sort" = Table.AddColumn(
+				      #"Added Discount_Tiers", 
+				      "Discount Tier Sort", 
+				      each let
+				          disc = if [discount_percentage] = null then 0 else Number.From([discount_percentage])
+				      in
+				          if disc <= 0.10 then 1
+				          else if disc <= 0.20 then 2
+				          else if disc <= 0.30 then 3
+				          else if disc <= 0.40 then 4
+				          else 5,
+				      Int64.Type
+				  ),
+				
+				  // 7. Purchase_Label (Order #1 to Order #10+)
+				  #"Added Purchase_Label" = Table.AddColumn(
+				      #"Added Discount_Tier_Sort", 
+				      "Purchase_Label", 
+				      each if [order_sequence] = null then null
+				      else if [order_sequence] >= 10 then "Order #10+"
+				      else "Order #" & Text.From([order_sequence]),
+				      type text
+				  ),
+				  #"Added custom" = Table.TransformColumnTypes(Table.AddColumn(#"Added Purchase_Label", "YearMonth", each Date.Year([date_key]) * 100 + Date.Month([date_key])), {{"YearMonth", Int64.Type}}),
+				  #"Merged queries" = Table.NestedJoin(#"Added custom", {"currency", "YearMonth"}, dim_exchange_rates, {"currency", "YearMonth"}, "dim_exchange_rates", JoinKind.LeftOuter),
+				  #"Expanded dim_exchange_rates" = Table.ExpandTableColumn(#"Merged queries", "dim_exchange_rates", {"currency", "YearMonth", "Year", "Month", "usd_multiplier"}, {"currency.1", "YearMonth.1", "Year", "Month", "usd_multiplier"}),
+				  #"Removed columns 1" = Table.RemoveColumns(#"Expanded dim_exchange_rates", {"currency.1", "YearMonth.1", "Year", "Month"}),
+				
+				  #"Renamed Local Columns" = Table.RenameColumns(
+				      #"Removed columns 1", // Replace with your actual previous step name
+				      {
+				          {"gross_sales", "gross_sales_local"},
+				          {"discount_amount", "discount_amount_local"},
+				          {"tax_amount", "tax_amount_local"},
+				          {"shipping_cost", "shipping_cost_local"},
+				          {"net_sales", "net_sales_local"},
+				          {"product_cost", "product_cost_local"},
+				          {"profit", "profit_local"}
+				      }
+				  ),
+				  // 3. Create USD-normalized columns using the ORIGINAL column names
+				  #"Added USD gross_sales" = Table.AddColumn(#"Renamed Local Columns", "gross_sales", each [gross_sales_local] * [usd_multiplier], Currency.Type),
+				  #"Added USD discount_amount" = Table.AddColumn(#"Added USD gross_sales", "discount_amount", each [discount_amount_local] * [usd_multiplier], Currency.Type),
+				  #"Added USD tax_amount" = Table.AddColumn(#"Added USD discount_amount", "tax_amount", each [tax_amount_local] * [usd_multiplier], Currency.Type),
+				  #"Added USD shipping_cost" = Table.AddColumn(#"Added USD tax_amount", "shipping_cost", each [shipping_cost_local] * [usd_multiplier], Currency.Type),
+				  #"Added USD net_sales" = Table.AddColumn(#"Added USD shipping_cost", "net_sales", each [net_sales_local] * [usd_multiplier], Currency.Type),
+				  #"Added USD product_cost" = Table.AddColumn(#"Added USD net_sales", "product_cost", each [product_cost_local] * [usd_multiplier], Currency.Type),
+				  #"Added USD profit" = Table.AddColumn(#"Added USD product_cost", "profit", each [profit_local] * [usd_multiplier], Currency.Type)
+				
+				in
+				  #"Added USD profit"
+				```
+
+	annotation PBI_ResultType = Table
+

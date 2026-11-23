@@ -1,0 +1,25 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["customer_summary","dim_customer","dim_product","fact_order_items","fact_orders","_Measures","dim_exchange_rates"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table customer_summary
+ref table dim_customer
+ref table dim_product
+ref table fact_order_items
+ref table fact_orders
+ref table Calendar
+ref table _Measures
+
+ref cultureInfo en-US
+

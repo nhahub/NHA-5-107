@@ -1,0 +1,190 @@
+table dim_customer
+	lineageTag: 12700dcb-aed4-4bfa-9b6d-197fe34eea6a
+
+	column customer_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 89297179-ea90-4b4c-9746-6500fa0adeec
+		summarizeBy: none
+		sourceColumn: customer_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_name
+		dataType: string
+		lineageTag: 0c8c1ff1-2780-4f48-98a2-cf327057f61c
+		summarizeBy: none
+		sourceColumn: customer_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_age
+		dataType: int64
+		formatString: 0
+		lineageTag: e768803d-c67c-4632-a2c2-e019b1509858
+		summarizeBy: none
+		sourceColumn: customer_age
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_age_group
+		dataType: string
+		lineageTag: 653112c0-f9ef-46a6-bdbf-2660fe6a0ce4
+		summarizeBy: none
+		sourceColumn: customer_age_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_gender
+		dataType: string
+		lineageTag: 5e6b6231-231b-486d-bdb1-aa4edf1db1ca
+		summarizeBy: none
+		sourceColumn: customer_gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_segment
+		dataType: string
+		lineageTag: bd362f02-7fa6-480e-9444-3f9487afbed9
+		summarizeBy: none
+		sourceColumn: customer_segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_city
+		dataType: string
+		lineageTag: 7df61505-33a9-40cc-afe9-467c52c7fb86
+		dataCategory: City
+		summarizeBy: none
+		sourceColumn: customer_city
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_state
+		dataType: string
+		lineageTag: 0a342cd9-069b-48bc-9318-e012671be664
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: customer_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_country
+		dataType: string
+		lineageTag: 662a6e26-3dae-4c80-9196-7ae708f4eaa9
+		dataCategory: Country
+		summarizeBy: none
+		sourceColumn: customer_country
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_region
+		dataType: string
+		lineageTag: c6d3c92b-07be-4980-9826-36453aa5fd67
+		dataCategory: Country
+		summarizeBy: none
+		sourceColumn: customer_region
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_postal_code
+		dataType: string
+		lineageTag: b83b03fb-797f-4908-8106-2af40481165b
+		dataCategory: PostalCode
+		summarizeBy: none
+		sourceColumn: customer_postal_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_acquisition_cost
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 079084ea-ee00-4764-8b3f-c43342ad9a85
+		summarizeBy: none
+		sourceColumn: customer_acquisition_cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column Customer_Lifetime_Value =
+			
+			CALCULATE(
+			    SUM(fact_order_items[net_sales_local])
+			)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 72bb9ba5-d942-4a98-bc41-ea6a3ec3f161
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column Customer_Lifetime_Tier =
+			
+			SWITCH(
+			    TRUE(),
+			    dim_customer[Customer_Lifetime_Value] >= 15000, "VIP",
+			    dim_customer[Customer_Lifetime_Value] >= 5000,  "Premium",
+			    dim_customer[Customer_Lifetime_Value] >= 1000,  "Regular",
+			    "Low-Value"
+			)
+		lineageTag: 669cba5c-7e32-435c-a329-cea06366d00f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer_Account_Label
+		dataType: string
+		lineageTag: 5986f9f1-6c82-4612-aa94-83cc80d47b45
+		summarizeBy: none
+		sourceColumn: Customer_Account_Label
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_customer = m
+		mode: import
+		source = ```
+				let
+				  Source = Sql.Database("localhost\SQLEXPRESS", "RetailChurn"),
+				  #"Navigation 1" = Source{[Schema = "gold", Item = "dim_customer"]}[Data],
+				  #"Removed columns" = Table.RemoveColumns(#"Navigation 1", {"gold_created_at", "customer_id"}),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Removed columns", {{"customer_acquisition_cost", Currency.Type}}),
+				  
+				  // 1. Calculate average CAC per customer_segment and customer_state
+				  #"Grouped CAC" = Table.Group(#"Changed column type", {"customer_segment", "customer_state"}, {{"Avg_CAC", each List.Average(List.RemoveNulls([customer_acquisition_cost])), type nullable number}}),
+				  
+				  // 2. Merge group averages back into the main table
+				  #"Merged CAC" = Table.NestedJoin(#"Changed column type", {"customer_segment", "customer_state"}, #"Grouped CAC", {"customer_segment", "customer_state"}, "TempGroup", JoinKind.LeftOuter),
+				  
+				  // 3. Expand the Avg_CAC column
+				  #"Expanded Avg_CAC" = Table.ExpandTableColumn(#"Merged CAC", "TempGroup", {"Avg_CAC"}),
+				  
+				  // 4. Replace nulls with segment/state average (fallback to $41.57 if group has 0 records)
+				  #"Imputed CAC" = Table.AddColumn(#"Expanded Avg_CAC", "CAC_Final", each [customer_acquisition_cost] ?? [Avg_CAC] ?? 41.57, Currency.Type),
+				  
+				  // 5. Remove helper columns and keep the original column name
+				  #"Removed Temp Columns" = Table.RemoveColumns(#"Imputed CAC", {"customer_acquisition_cost", "Avg_CAC"}),
+				
+				  #"Renamed Final Column" = Table.RenameColumns(#"Removed Temp Columns", {{"CAC_Final", "customer_acquisition_cost"}}),
+				
+				  #"Added Customer_Account_Label" = Table.AddColumn(
+				      #"Renamed Final Column", 
+				      "Customer_Account_Label", 
+				      each let
+				          name = if [customer_name] = null then "" else Text.From([customer_name]),
+				          id = if [customer_key] = null then "" else Text.From([customer_key]),
+				          seg = if [customer_segment] = null then "" else Text.From([customer_segment])
+				      in
+				          name & " (" & id & " - " & seg & ")",
+				      type text
+				  ),
+				
+				  // 8. Sort by customer_key
+				  #"Sorted rows" = Table.Sort(#"Added Customer_Account_Label", {{"customer_key", Order.Ascending}})
+				in
+				  #"Sorted rows"
+				```
+
+	annotation PBI_ResultType = Table
+

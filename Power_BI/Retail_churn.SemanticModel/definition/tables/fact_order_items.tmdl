@@ -1,0 +1,362 @@
+table fact_order_items
+	lineageTag: 244d3493-a338-4646-a45f-27e16b5db8b9
+
+	column order_item_key
+		dataType: int64
+		formatString: 0
+		lineageTag: f28ec4d7-e742-4979-b5bd-73904dfb595e
+		summarizeBy: sum
+		sourceColumn: order_item_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_key
+		dataType: int64
+		formatString: 0
+		lineageTag: a50f68e0-ff74-4413-8f5e-21fb9d0cd6de
+		summarizeBy: none
+		sourceColumn: order_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 14778aa0-4379-418f-bc0a-564fba13bea1
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column customer_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 43ad7116-ad05-46d9-b796-5e0dd537f4c1
+		summarizeBy: none
+		sourceColumn: customer_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 96b0d8d5-cd41-4a02-998e-91ca19892cdd
+		summarizeBy: none
+		sourceColumn: product_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 0e5ac2cf-0b6b-4a20-9ab0-bfb79a459f23
+		summarizeBy: sum
+		sourceColumn: quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit_price_local
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 94fb6bd5-7704-47bb-a2a2-fb12136900a3
+		summarizeBy: sum
+		sourceColumn: unit_price_local
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column discount_percentage
+		dataType: double
+		lineageTag: eb6fb882-2c03-4106-b00a-ddb9724edf6e
+		summarizeBy: sum
+		sourceColumn: discount_percentage
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column discount_amount_local
+		dataType: decimal
+		lineageTag: deaf8270-0e98-4a13-bbf2-2639d32da7d3
+		summarizeBy: sum
+		sourceColumn: discount_amount_local
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column gross_sales_local
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: cfc644bf-df45-4595-8c6e-b5cfef3c401b
+		summarizeBy: sum
+		sourceColumn: gross_sales_local
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column tax_amount_local
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: a88e8223-24e7-4210-ade3-b68f179101dc
+		summarizeBy: sum
+		sourceColumn: tax_amount_local
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column shipping_cost_local
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 7034ab4a-814d-43e9-b9e5-410eb7f6f7c4
+		summarizeBy: sum
+		sourceColumn: shipping_cost_local
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column net_sales_local
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 493131bd-c2fd-4247-b8c8-d132c96a6d15
+		summarizeBy: sum
+		sourceColumn: net_sales_local
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column product_cost_local
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: c0322b75-fa91-4cac-b2c6-5d22dbd9600d
+		summarizeBy: sum
+		sourceColumn: product_cost_local
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column profit_local
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 25bfe797-555a-4b4a-84b8-8ee6e2bded3e
+		summarizeBy: sum
+		sourceColumn: profit_local
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column unit_price
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 5c55750c-b44f-409e-981c-a1b7d4c8f957
+		summarizeBy: sum
+		sourceColumn: unit_price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column gross_sales
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: d68597f1-ce67-4650-bf37-8c4291c3d131
+		summarizeBy: sum
+		sourceColumn: gross_sales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column discount_amount
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: b36bfede-9be1-4a7a-aafd-fd15aac49f1e
+		summarizeBy: sum
+		sourceColumn: discount_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column tax_amount
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 9f33d44c-9489-4197-b85a-f42bc7da629c
+		summarizeBy: sum
+		sourceColumn: tax_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column shipping_cost
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: b95d7400-60aa-4840-8cae-9a9e2d4d755f
+		summarizeBy: sum
+		sourceColumn: shipping_cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column net_sales
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: c5c8c4b7-068d-402b-a1d7-2f88817644f1
+		summarizeBy: sum
+		sourceColumn: net_sales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column product_cost
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: db591bd5-3e67-47c1-b6ee-658c2e1f1336
+		summarizeBy: sum
+		sourceColumn: product_cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column profit
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 7697bd4c-cdf8-47c6-9b0c-b0efbcf415b7
+		summarizeBy: sum
+		sourceColumn: profit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	partition fact_order_items = m
+		mode: import
+		source = ```
+				let
+				  Source = Sql.Database("localhost\SQLEXPRESS", "RetailChurn"),
+				  #"Navigation 1" = Source{[Schema = "gold", Item = "fact_order_items"]}[Data],
+				
+				  // 1. Remove metadata columns (keeping order_id temporarily to lookup currency from fact_orders)
+				  #"Removed columns" = Table.RemoveColumns(#"Navigation 1", {"gold_created_at", "is_quantity_corrected", "is_net_sales_corrected"}),
+				
+				  // 2. Set initial column types
+				  #"Changed column type" = Table.TransformColumnTypes(#"Removed columns", {
+				      {"unit_price", Currency.Type}, 
+				      {"discount_percentage", Percentage.Type}, 
+				      {"gross_sales", Currency.Type}, 
+				      {"tax_amount", Currency.Type}, 
+				      {"shipping_cost", Currency.Type}, 
+				      {"net_sales", Currency.Type}, 
+				      {"product_cost", Currency.Type}, 
+				      {"profit", Currency.Type}, 
+				      {"discount_amount", Currency.Type}
+				  }),
+				
+				  // 3. Convert integer date_key to a real Date
+				  #"Converted date_key to Date" = Table.TransformColumns(
+				      #"Changed column type", 
+				      {{"date_key", each if _ <> null then Date.FromText(Text.From(_)) else null, type date}}
+				  ),
+				
+				  // 4. Merge fact_orders to retrieve currency code
+				  #"Merged fact_orders" = Table.NestedJoin(
+				      #"Converted date_key to Date", 
+				      {"order_id"}, 
+				      Source{[Schema = "gold", Item = "fact_orders"]}[Data], 
+				      {"order_id"}, 
+				      "OrderHeader", 
+				      JoinKind.LeftOuter
+				  ),
+				
+				  // 5. Expand currency from fact_orders
+				  #"Expanded currency" = Table.ExpandTableColumn(
+				      #"Merged fact_orders", 
+				      "OrderHeader", 
+				      {"currency"}, 
+				      {"currency"}
+				  ),
+				
+				  // 6. Create YearMonth Key (e.g., 202210) from date_key for FX lookup
+				  #"Added YearMonth Key" = Table.AddColumn(
+				      #"Expanded currency", 
+				      "YearMonth", 
+				      each if [date_key] <> null then Date.Year([date_key]) * 100 + Date.Month([date_key]) else null, 
+				      Int64.Type
+				  ),
+				
+				  // 7. Merge with dim_exchange_rates table on {currency, YearMonth}
+				  #"Merged dim_exchange_rates" = Table.NestedJoin(
+				      #"Added YearMonth Key", 
+				      {"currency", "YearMonth"}, 
+				      dim_exchange_rates, 
+				      {"currency", "YearMonth"}, 
+				      "FX_Lookup", 
+				      JoinKind.LeftOuter
+				  ),
+				
+				  // 8. Expand usd_multiplier
+				  #"Expanded FX_Lookup" = Table.ExpandTableColumn(
+				      #"Merged dim_exchange_rates", 
+				      "FX_Lookup", 
+				      {"usd_multiplier"}
+				  ),
+				
+				  // 9. Clean usd_multiplier (Defaults to 1.0 for USD or nulls)
+				  #"Cleaned usd_multiplier" = Table.AddColumn(
+				      #"Expanded FX_Lookup", 
+				      "usd_multiplier_clean", 
+				      each if [currency] = "USD" or [usd_multiplier] = null or [usd_multiplier] = 0 then 1.0 else Number.From([usd_multiplier]),
+				      type number
+				  ),
+				
+				  // 10. Rename local line-item monetary columns to *_local
+				  #"Renamed Local Columns" = Table.RenameColumns(
+				      #"Cleaned usd_multiplier", 
+				      {
+				          {"unit_price", "unit_price_local"},
+				          {"gross_sales", "gross_sales_local"},
+				          {"discount_amount", "discount_amount_local"},
+				          {"tax_amount", "tax_amount_local"},
+				          {"shipping_cost", "shipping_cost_local"},
+				          {"net_sales", "net_sales_local"},
+				          {"product_cost", "product_cost_local"},
+				          {"profit", "profit_local"}
+				      }
+				  ),
+				
+				  // 11. Recreate USD-Normalized financial columns using ORIGINAL column names
+				  #"Added USD unit_price" = Table.AddColumn(#"Renamed Local Columns", "unit_price", each [unit_price_local] * [usd_multiplier_clean], Currency.Type),
+				  #"Added USD gross_sales" = Table.AddColumn(#"Added USD unit_price", "gross_sales", each [gross_sales_local] * [usd_multiplier_clean], Currency.Type),
+				  #"Added USD discount_amount" = Table.AddColumn(#"Added USD gross_sales", "discount_amount", each [discount_amount_local] * [usd_multiplier_clean], Currency.Type),
+				  #"Added USD tax_amount" = Table.AddColumn(#"Added USD discount_amount", "tax_amount", each [tax_amount_local] * [usd_multiplier_clean], Currency.Type),
+				  #"Added USD shipping_cost" = Table.AddColumn(#"Added USD tax_amount", "shipping_cost", each [shipping_cost_local] * [usd_multiplier_clean], Currency.Type),
+				  #"Added USD net_sales" = Table.AddColumn(#"Added USD shipping_cost", "net_sales", each [net_sales_local] * [usd_multiplier_clean], Currency.Type),
+				  #"Added USD product_cost" = Table.AddColumn(#"Added USD net_sales", "product_cost", each [product_cost_local] * [usd_multiplier_clean], Currency.Type),
+				  #"Added USD profit" = Table.AddColumn(#"Added USD product_cost", "profit", each [profit_local] * [usd_multiplier_clean], Currency.Type),
+				
+				  // 13. Remove order_id and temporary helper lookup columns
+				  #"Final Cleaned Columns" = Table.RemoveColumns(
+				      #"Added USD profit", 
+				      {"order_id", "currency", "YearMonth", "usd_multiplier", "usd_multiplier_clean"}
+				  )
+				in
+				  #"Final Cleaned Columns"
+				```
+
+	annotation PBI_ResultType = Table
+

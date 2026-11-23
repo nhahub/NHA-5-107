@@ -1,0 +1,110 @@
+expression dim_exchange_rates = ```
+		let
+		    // 1. Define list of 7 operating currencies
+		    Currencies = {"USD", "GBP", "EUR", "AED", "AUD", "CAD", "INR"},
+		
+		    // 2. Generate years (2021-2025) and months (1-12)
+		    Years = {2021..2025},
+		    Months = {1..12},
+		
+		    // 3. Build a grid of (Year, Month, YearMonth)
+		    MonthYearGrid = List.Combine(
+		        List.Transform(Years, (y) => 
+		            List.Transform(Months, (m) => [Year = y, Month = m, YearMonth = y * 100 + m])
+		        )
+		    ),
+		
+		    // 4. Cross join (Cartesian product) MonthYearGrid with Currencies
+		    Grid = List.Combine(
+		        List.Transform(
+		            MonthYearGrid, 
+		            (mRec) => List.Transform(
+		                Currencies, 
+		                (curr) => Record.Combine({mRec, [currency = curr]})
+		            )
+		        )
+		    ),
+		
+		    // 5. Convert Records to Table
+		    TableFromGrid = Table.FromRecords(Grid),
+		
+		    // 6. Calculate month-by-month usd_multiplier for each currency
+		    #"Added Multiplier" = Table.AddColumn(
+		        TableFromGrid,
+		        "usd_multiplier",
+		        each let
+		            c = [currency],
+		            y = [Year],
+		            m = [Month]
+		        in
+		            if c = "USD" then 1.0000
+		            else if c = "AED" then 0.2723 // Fixed peg (1 USD = 3.6725 AED)
+		            
+		            // British Pound (GBP) Monthly Progression
+		            else if c = "GBP" then
+		                if y = 2021 then 1.3650 + ((m - 6) * 0.0030)
+		                else if y = 2022 then 1.3520 - ((m - 1) * 0.0150)
+		                else if y = 2023 then 1.2080 + ((m - 1) * 0.0040)
+		                else if y = 2024 then 1.2710 + ((m - 6) * 0.0020)
+		                else if y = 2025 then 1.2540 - ((m - 1) * 0.0010)
+		                else 1.2500
+		
+		            // Euro (EUR) Monthly Progression
+		            else if c = "EUR" then
+		                if y = 2021 then 1.2210 - ((m - 1) * 0.0070)
+		                else if y = 2022 then 1.1310 - ((m - 1) * 0.0120)
+		                else if y = 2023 then 1.0850 + ((m - 1) * 0.0025)
+		                else if y = 2024 then 1.0920 - ((m - 6) * 0.0030)
+		                else if y = 2025 then 1.0480 + ((m - 1) * 0.0015)
+		                else 1.0800
+		
+		            // Australian Dollar (AUD) Monthly Progression
+		            else if c = "AUD" then
+		                if y = 2021 then 0.7700 - ((m - 1) * 0.0040)
+		                else if y = 2022 then 0.7180 - ((m - 1) * 0.0050)
+		                else if y = 2023 then 0.6810 + ((m - 1) * 0.0015)
+		                else if y = 2024 then 0.6650 - ((m - 6) * 0.0020)
+		                else if y = 2025 then 0.6280 + ((m - 1) * 0.0010)
+		                else 0.6700
+		
+		            // Canadian Dollar (CAD) Monthly Progression
+		            else if c = "CAD" then
+		                if y = 2021 then 0.7850 + ((m - 1) * 0.0010)
+		                else if y = 2022 then 0.7910 - ((m - 1) * 0.0040)
+		                else if y = 2023 then 0.7420 + ((m - 1) * 0.0010)
+		                else if y = 2024 then 0.7440 - ((m - 6) * 0.0025)
+		                else if y = 2025 then 0.6980 + ((m - 1) * 0.0005)
+		                else 0.7400
+		
+		            // Indian Rupee (INR) Monthly Progression
+		            else if c = "INR" then
+		                if y = 2021 then 0.0137 - ((m - 1) * 0.00003)
+		                else if y = 2022 then 0.0134 - ((m - 1) * 0.00008)
+		                else if y = 2023 then 0.0121 - ((m - 1) * 0.00002)
+		                else if y = 2024 then 0.0120 - ((m - 1) * 0.00003)
+		                else if y = 2025 then 0.0116 - ((m - 1) * 0.00001)
+		                else 0.0120
+		
+		            else 1.0000,
+		        type number
+		    ),
+		
+		    // 7. Reorder & set column data types
+		    #"Reordered Columns" = Table.ReorderColumns(#"Added Multiplier", {"currency", "YearMonth", "Year", "Month", "usd_multiplier"}),
+		    #"Changed Type" = Table.TransformColumnTypes(
+		        #"Reordered Columns", 
+		        {
+		            {"currency", type text}, 
+		            {"YearMonth", Int64.Type}, 
+		            {"Year", Int64.Type}, 
+		            {"Month", Int64.Type}, 
+		            {"usd_multiplier", type number}
+		        }
+		    )
+		in
+		    #"Changed Type"
+		```
+	lineageTag: 84088976-2b8e-4cfb-9d45-897625287e22
+
+	annotation PBI_ResultType = Table
+
